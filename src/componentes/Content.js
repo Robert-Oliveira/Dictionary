@@ -7,95 +7,18 @@ import newWindow from "../assets/images/icon-new-window.svg";
 
 import { useSelector } from "react-redux";
 
-// const Content = () => {
-//   const { theme, status, wordDetails } = useSelector((state) => state);
-
-//   const play = () => {
-//     const audio = document.getElementById("audio");
-//     audio.play();
-//   };
-
-//   const partOfSpeech = wordDetails?.meanings.map((speech, idx) => {
-//     return speech.partOfSpeech && <SpeechType key={idx} {...speech} />;
-//   });
-
-//   const audioArr =
-//     wordDetails?.phonetics.filter((audio) => {
-//       return audio.audio !== "";
-//     }) || null;
-
-//   const audioSrc =
-//     audioArr !== null && audioArr.length > 0 ? audioArr[0].audio : "";
-
-//   if (status === "submitting") {
-//     return <Loading />;
-//   }
-
-//   return (
-//     <section>
-//       <div className="keyword-container">
-//         <div className="word">
-//           <h1>{wordDetails?.word}</h1>
-//           <p>{wordDetails?.phonetic}</p>
-//         </div>
-//         <div className="img-container">
-//           <img
-//             src={playIcon}
-//             alt="play-icon"
-//             className="play-icon"
-//             onClick={play}
-//           />
-//         </div>
-//       </div>
-//       {partOfSpeech}
-//       <div
-//         className={`
-//             source-container ${theme.darkMode ? "source-container-dark" : ""}`}
-//       >
-//         <p className="source">Source</p>
-//         <a
-//           id="source-link"
-//           className={`
-//                     source-link ${theme.darkMode ? "dark-source-link" : ""}`}
-//           target="_blank"
-//           rel="noreferrer"
-//           href={`https://en.wiktionary.org/wiki/${wordDetails?.word}`}
-//         >
-//           https://en.wiktionary.org/wiki/{wordDetails?.word}
-//         </a>
-//         <a
-//           href={`https://en.wiktionary.org/wiki/${wordDetails?.word}`}
-//           target="_blank"
-//           rel="noreferrer"
-//         >
-//           <img src={newWindow} alt="" className="new-window" />
-//         </a>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default Content;
-
 const Content = () => {
   const { theme, status, wordDetails } = useSelector((state) => state);
 
-  const play = () => {
-    const audio = document.getElementById("audio");
-    audio.play();
-  };
+  if (!wordDetails) {
+    return null; // Retorna nulo caso não haja wordDetails
+  }
 
-  const partOfSpeech = wordDetails?.meanings.map((speech, idx) => {
+  const { word, phonetic, meanings } = wordDetails;
+
+  const partOfSpeech = meanings?.map((speech, idx) => {
     return speech.partOfSpeech && <SpeechType key={idx} {...speech} />;
   });
-
-  const audioArr =
-    wordDetails?.phonetics.filter((audio) => {
-      return audio.audio !== "";
-    }) || null;
-
-  const audioSrc =
-    audioArr !== null && audioArr.length > 0 ? audioArr[0].audio : "";
 
   if (status === "submitting") {
     return <Loading />;
@@ -103,40 +26,32 @@ const Content = () => {
 
   return (
     <section>
-      <div className="keyword-container flex items-center">
-        <div className="word">
-          <h1 className="text-4xl font-semibold">{wordDetails?.word}</h1>
-          <p className="text-base font-normal">{wordDetails?.phonetic}</p>
-        </div>
-        <div className="img-container">
-          <img
-            src={playIcon}
-            alt="play-icon"
-            className="play-icon cursor-pointer"
-            onClick={play}
-          />
+      <div className="flex items-center">
+        <div className="flex items-center ml-auto">
+          <h1 className="text-4xl font-semibold">{word}</h1>
+          <p className="text-base font-normal">{phonetic}</p>
         </div>
       </div>
       {partOfSpeech}
       <div
-        className={`
-            source-container ${theme.darkMode ? "source-container-dark" : ""}`}
+        className={`source-container ${
+          theme.darkMode ? "source-container-dark" : ""
+        }`}
       >
         <p className="source text-sm underline">Source</p>
         <a
           id="source-link"
-          className={`
-                    source-link ${
-                      theme.darkMode ? "dark-source-link" : ""
-                    } text-base`}
+          className={`source-link ${
+            theme.darkMode ? "dark-source-link" : ""
+          } text-base`}
           target="_blank"
           rel="noreferrer"
-          href={`https://en.wiktionary.org/wiki/${wordDetails?.word}`}
+          href={`https://en.wiktionary.org/wiki/${word}`}
         >
-          https://en.wiktionary.org/wiki/{wordDetails?.word}
+          {`https://en.wiktionary.org/wiki/${word}`}
         </a>
         <a
-          href={`https://en.wiktionary.org/wiki/${wordDetails?.word}`}
+          href={`https://en.wiktionary.org/wiki/${word}`}
           target="_blank"
           rel="noreferrer"
         >

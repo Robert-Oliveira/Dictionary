@@ -10,51 +10,6 @@ import { setIdleStatus, setSubmittingStatus } from "../redux/statusReducer";
 import { addWordDetails } from "../redux/wordDetailsReducer";
 import { addKeyWord } from "../redux/keyWordReducer";
 
-// const Main = () => {
-//   const { error, formData } = useSelector(state => state)
-//   const dispatch = useDispatch()
-
-//   const handleOnChange = (e) => {
-//     dispatch(addKeyWord(e.target.value))
-//   }
-
-//   useEffect(() => {
-//     formData.search &&
-//     dispatch(setSubmittingStatus())
-//     dispatch(errorAction(null))
-//     dispatch(addWordDetails(null))
-//     async function getData () {
-//       try {
-//         const data = await getWord(formData.search)
-//         dispatch(addWordDetails(data[0]))
-//       } catch (err) {
-//         dispatch(errorAction(err))
-//       } finally {
-//         dispatch(setIdleStatus())
-//       }
-//     }
-//     formData.search && getData()
-//   }, [formData.search, dispatch])
-
-//   return (
-//         <>
-//             <SearchBar
-//                 handleOnChange={handleOnChange}
-//             />
-
-//             {
-//                 formData.search && !error
-//                   ? <Content />
-//                   : !formData.search
-//                       ? <LandingPage />
-//                       : <Error />
-//             }
-
-//         </>
-//   )
-// }
-
-// export default Main
 const Main = () => {
   const { error, formData } = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -63,34 +18,41 @@ const Main = () => {
     dispatch(addKeyWord(e.target.value));
   };
 
-  useEffect(() => {
-    formData.search && dispatch(setSubmittingStatus());
+  const clearData = () => {
     dispatch(errorAction(null));
     dispatch(addWordDetails(null));
-    async function getData() {
-      try {
-        const data = await getWord(formData.search);
-        dispatch(addWordDetails(data[0]));
-      } catch (err) {
-        dispatch(errorAction(err));
-      } finally {
-        dispatch(setIdleStatus());
-      }
+  };
+
+  const fetchData = async () => {
+    try {
+      const data = await getWord(formData.search);
+      dispatch(addWordDetails(data[0]));
+    } catch (err) {
+      dispatch(errorAction(err));
+    } finally {
+      dispatch(setIdleStatus());
     }
-    formData.search && getData();
+  };
+
+  useEffect(() => {
+    if (formData.search) {
+      dispatch(setSubmittingStatus());
+      clearData();
+      fetchData();
+    }
   }, [formData.search, dispatch]);
+
+  const showContent = formData.search && !error;
+  const showLanding = !formData.search;
+  const showError = formData.search && error;
 
   return (
     <>
       <SearchBar handleOnChange={handleOnChange} />
 
-      {formData.search && !error ? (
-        <Content />
-      ) : !formData.search ? (
-        <LandingPage />
-      ) : (
-        <Error />
-      )}
+      {showContent && <Content />}
+      {showLanding && <LandingPage />}
+      {showError && <Error />}
     </>
   );
 };

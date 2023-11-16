@@ -30,25 +30,6 @@ h4 {
   max-width: 737px;
 }
 
-.app-header {
-  display: flex;
-  user-select: none;
-  -ms-user-select: none;
-  -webkit-user-select: none;
-}
-
-.logo {
-  margin-right: auto;
-  width: 28px;
-  height: 32px;
-}
-
-.app-font-slider {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
 .moon-icon {
   height: 20px;
   width: 20px;
@@ -210,15 +191,6 @@ option:checked {
 .search-bar:disabled {
   opacity: 50%;
   cursor: not-allowed;
-}
-
-.keyword-container {
-  display: flex;
-  align-items: center;
-}
-
-.word {
-  margin-right: auto;
 }
 
 .word > h1 {
@@ -438,30 +410,6 @@ option:checked {
 
 .noun-dark::after {
   background: #3a3a3a;
-}
-
-/* Error */
-
-.error-container {
-  width: 100%;
-  text-align: center;
-  margin-top: 132px;
-}
-
-.error-emoji {
-  font-size: 64px;
-  margin: 0;
-}
-
-.error-title {
-  margin: 44px 0 24px;
-  font-size: 20px;
-}
-
-.error-description {
-  line-height: 24px;
-  font-size: 18px;
-  color: #757575;
 }
 
 @media (min-width: 768px) {
